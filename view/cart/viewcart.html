@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row mb">
+        <div class="boxtitle">THONG TIN GIO HANG</div>
+        <div class="row boxcontent cart">
+            <table class="dathang">
+                <tr><td><input type="text" name="hoten" placeholder="Nhập họ tên"/></td></tr>
+                <tr><td><input type="text" name="address" placeholder="Nhập địa chỉ"/></td></tr>
+                <tr><td><input type="text" name="email" placeholder="Nhập email"/></td></tr>
+                <tr><td><input type="text" name="tel" placeholder="Nhập số điện thoại"/></td></tr>
+                <tr>
+                    <td>Phương thức thanh toán</td>
+                    <input type="radio" name="pttt" value="1"/>Thanh toán khi nhận hàng<br/>
+                </tr>
+            </table>
+            
+        </div>      
+    </div>
+    <div class="row mb">
+        <div class="boxtitle">THÔNG TIN ĐẶT HÀNG</div>
+        <div class="row boxcontent billform">
+            <table>
+                <!-- <?php
+                if(isset($_SESSION['nguoidung'])) {
+                    $user_name= $_SESSION['nguoidung']['user_name'];
+                    $address= $_SESSION['nguoidung']['address'];
+                    $email= $_SESSION['nguoidung']['email'];
+                    $tel= $_SESSION['nguoidung']['tel'];
+                } else {
+                    $user_name= '';
+                    $address= '';   
+                    $tel= '';
+                    $email= '';
+                }
+                ?> -->
+                <tr>
+                    <td>Người đặt hàng</td>
+                    <td><input type="text" name="user_name" value="<?=$user_name?>"/></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="text" name="email" value="<?=$email?>"/></td>
+                </tr>
+                <tr>
+                    <td>Địa chỉ</td>
+                    <td><input type="text" name="address" value="<?=$address?>"/></td>
+                </tr>
+                <tr>
+                    <td>Số điện thoại</td>
+                    <td><input type="text" name="tel" value="<?=$tel?>"/></td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+
+    <div class="row mb">
+        <div class="boxtitle">PHƯƠNG THỨC THANH TOÁN</div>
+        <div class="row boxcontent">
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" name="pttt" value="1" id="pttt_1"/>
+                        <label for="pttt_1">Thanh toán khi nhận hàng</label>
+                    </td>
+                    <td>
+                        <input type="radio" name="pttt" value="2" id="pttt_2"/>
+                        <label for="pttt_2">Thanh toán online</label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mb">
+        <div class="boxtitle">THÔNG TIN ĐƠN HÀNG</div>
+        <div class="row boxcontent">
+            <?php
+                global $img_path_spadd;
+                if(isset($_SESSION["mycart"])&&(count($_SESSION['mycart'])>0)) {
+                    echo '<table><tr>
+                        <th>STT</th>
+                        <th>Ten SP</th>
+                        <th>Hinh</th>
+                        <th>Don Gia</th>
+                        <th>So luong</th>
+                        <th>Thanh tien</th>
+                    </tr>';
+                    $i=0;
+                    $tong=0;
+                    foreach($_SESSION["mycart"] as $item) {
+                        $ttien=$item[3] * $item[4];
+                        $hinh=$img_path_spadd.$item[2];
+                        $tong+=$ttien;
+                        echo '<tr>
+                        <td>'.($i+1).'</td>
+                        <td>'.$item[1].'</td>
+                        <td><img src="'.$hinh.'" height="80px"/></td>
+                        <td>'.$item[3].'</td>
+                        <td>'.$item[4].'</td>
+                        <td>'.$ttien.'</td>  
+                    </tr>';
+                    $i++; 
+                    }
+                    echo '<tr><td colspan="5">Tong tien</td><td>'.$tong.'</td><td></td></tr>';
+                    echo '</table>';
+                }
+            
+            ?>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi fuga ab nihil molestiae commodi recusandae necessitatibus repellendus, ad illo vitae nulla laboriosam, ut ratione voluptas nostrum delectus! Minima, saepe cupiditate?
+            Illum deleniti eius autem aperiam quasi. Dolorum, commodi rem! Pariatur voluptatem, obcaecati aperiam, blanditiis assumenda, molestiae perferendis debitis officia veniam tempora quibusdam nostrum enim consequuntur. Doloribus deserunt necessitatibus assumenda suscipit.
+        </div>
+    </div>
+    <?php
+                        if(isset($_SESSION["iddh"])&&($_SESSION["iddh"]>0)) {
+                            $orderinfo=getorderinfo($_SESSION["iddh"]);
+                            if(count($orderinfo)>=0) {
+                    ?>
+                        <div>Mã đơn hàng: <?=$orderinfo[0]['madh']; ?></div>
+                        <!-- <div>Tên sản phẩm: <?=$orderinfo[0]['t']; ?></div> -->
+                        <table>
+                            <tr><td>Người đặt hàng: <?=$orderinfo[0]['fullname'];?></td></tr>
+                            <tr><td>Ngày đặt: <?=$orderinfo[0]['ngaydathang'];?></td></tr>
+                            <tr><td>Địa chỉ giao hàng: <?=$orderinfo[0]['address'];?></td></tr>
+                            <tr><td>Số điện thoại: <?=$orderinfo[0]['tel'];?></td></tr>
+                            <tr><td>Email: <?=$orderinfo[0]['email'];?></td></tr>
+                            <tr><td>Tổng hóa đơn: <?=$orderinfo[0]['tongdonhang'];?>$</td></tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>Phương thức thanh toán: 
+                                    <?php
+                                        switch($orderinfo[0]['pttt']) {
+                                            case '1':
+                                                $txtmess= 'Thanh toán khi nhận hàng';
+                                                break;
+                                            case '2':
+                                                $txtmess= 'Thanh toán online';
+                                                break;
+                                            default:
+                                                $txtmess= 'Qúy khách chưa chọn phương thức thanh toán!';
+                                        }
+                                        echo $txtmess;
+                                    ?>
+                                </td>
+                            </tr>
+                        </table>
+                    <?php 
+                            }
+                        } else {
+                            echo 'Đơn hàng trống!';
+                        }
+                    ?>
+</body>
+</html>
